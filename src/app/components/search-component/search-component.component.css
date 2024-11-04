@@ -1,0 +1,91 @@
+.style-card{
+    padding: 20px;
+    align-items: flex-start;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 0.5px solid #BDBDBD;
+    margin-top: 10px;
+ }
+    
+ .vertical-hr {
+    border-left: 1px solid #cacaca; /* You can adjust the color and thickness */
+    height: auto; /* Adjust the height as needed */
+    margin: 0 auto; /* Center the line horizontally */
+}
+
+.style-avatar{
+    width: 100%;
+    margin: 0px;
+}
+
+#style-header{
+    color: #989898;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    padding-top: 12px;
+   }
+
+   #style-desc{
+    color: #454545;
+    padding-top: 12px;
+    font-family: Lato;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+   }
+
+   .example-button-row {
+    display: table-cell;
+    max-width: 600px;
+    justify-content: space-between;
+  }
+  
+  .example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+  }
+
+
+  .custom-checkbox .mat-checkbox-frame {
+    border-color: blue;
+}
+
+.custom-checkbox.mat-checkbox-checked .mat-checkbox-background {
+    background-color: blue;
+    border-color: blue;
+}
+
+.repoPage{
+  height: 90;
+  max-height: 650px; /* Adjust this height to your preference */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  padding-right: 10px; /* Optional padding to prevent scrollbar overlap */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.repoPage::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbar for IE and Edge */
+.repoPage {
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Hide scrollbar for Firefox */
+.repoPage {
+  scrollbar-width: none; /* Firefox */
+}
+
+.closeIcon{
+  top: 0px;
+  display: inline;
+  float: right;
+}
+
+button{
+  margin-top: 3px;
+}

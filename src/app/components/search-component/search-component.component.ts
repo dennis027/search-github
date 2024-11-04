@@ -1,8 +1,9 @@
-import { Component, HostListener, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { GithubSearchService } from '../../services/github-search.service';
 import {MaterialModule} from '../../shared-imports/imports'
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-search-component',
@@ -36,7 +37,27 @@ export class SearchComponentComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private githubService: GithubSearchService,private dialog: MatDialog) {}
+  constructor(private githubService: GithubSearchService,private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object) {
+    this.logWindowSize();
+
+  }
+
+   // HostListener to listen for window resize events
+   @HostListener('window:resize', ['$event'])
+   onResize(event: any) {
+     this.logWindowSize();
+   }
+ 
+   // Method to log the window size
+   logWindowSize() {
+     if (isPlatformBrowser(this.platformId)) {
+       const width = window.innerWidth;
+       const height = window.innerHeight;
+ 
+       // Set mobileDisplay based on width
+       this.mobileDisplay = width < 1030;
+     }
+   }
 
   ngOnInit(): void {
     // Get user data
@@ -83,26 +104,10 @@ export class SearchComponentComponent {
 
     this.getFollowersData() 
     this.getFollowingData()
-    this.logWindowSize();
+ 
   }
 
-    // HostListener to listen for window resize events
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-      this.logWindowSize();
-    }
-  
-    // Method to log the window size
-    logWindowSize() {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      if (width < 1030){
-        this.mobileDisplay = true
-      }
-      else{
-        this.mobileDisplay = false
-      }
-    }
+
 
   getFollowersData() {
     // Step 1: Get followers of 'dennis027'
