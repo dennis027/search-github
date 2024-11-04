@@ -15,6 +15,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SearchPipe } from '../pipes/search.pipe';
+
+
 
 @NgModule({
   imports: [  
@@ -33,6 +36,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    CommonModule,
+    SearchPipe
   ],
   exports: [
     MatButtonModule, 
@@ -49,6 +54,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    CommonModule,
+    SearchPipe
   ],
+  
 })
 export class MaterialModule {}

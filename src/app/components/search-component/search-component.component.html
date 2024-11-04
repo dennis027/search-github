@@ -1,1 +1,683 @@
-<p>search-component works!</p>
+
+<br>
+<div >
+<div class="container-fluid">
+    <h4>Github Search App</h4>
+    <div class="style-card" *ngIf="!mobileDisplay">
+        <div class="row">
+            <div class="col-4">
+                <div class="row">
+                    <div class="col col-md-6" id ="">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Enter Github Username</mat-label>
+                            <input placeholder="Enter User Name" matInput [(ngModel)]="searchUsername" >
+                            <mat-hint>Github Username</mat-hint>
+                          </mat-form-field>
+                    </div>
+                    <div class="col col-md-6"> <br>
+                        <button *ngIf="loadSearch" mat-button disabled="true"> <mat-icon matSuffix> <mat-spinner diameter="25"></mat-spinner></mat-icon></button>
+                        <button *ngIf="!loadSearch" mat-button (click)="searchGitUser()" > <mat-icon matSuffix>search</mat-icon></button>
+                    </div>
+                </div> 
+                <h5>Basic Information</h5>
+                <div class="row">
+                    <div class="col ">
+                        <div class="style-card">
+                            <img class="style-avatar" src="{{userData?.avatar_url}}" alt="">
+                        </div>
+                    </div>
+                    <div class="col ">
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Name
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.name}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Location
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.location}}
+                                </div>
+                            </div> 
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Company
+                                </div> 
+                                <div class="col" id="style-desc">
+                                {{userData?.company}}
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Blog/Portfolio
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    <button mat-stroked-button (click)="viewPortfolio()" style="color: blue;height: 30px;">View</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                Bio
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.bio}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Followers
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    <button (click)="openFollowerDial()" mat-button style="color: blue;">{{userData?.followers}} - view</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Following
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    <button (click)="openFollowingDial()" mat-button style="color: blue;">{{userData?.following}} - view</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Created At
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.created_at | date}}          
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Updated At
+                                </div> 
+                                <div class="col" id="style-desc">
+                                {{userData?.updated_at | date}}
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    Email
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.email}}
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col" id="style-header">
+                                    X username
+                                </div> 
+                                <div class="col" id="style-desc">
+                                    {{userData?.twitter_username}}
+                                </div>
+                            </div> 
+                        </div>
+                
+                    </div>
+                </div>
+          
+
+            </div>
+            <div class="vertical-hr col-1"></div>     
+            <div class="col-7" >
+                <h5>Repositories</h5>
+                <!-- Search input -->
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Search Repositories</mat-label>
+                    <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"  placeholder="Search by name, full name, description, or language">
+                  </mat-form-field>
+                  
+          
+             
+                <div class="repoPage">
+                    <div *ngFor="let repo of paginatedRepos | search: searchTerm let i = index">
+                        <div class="style-card">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                           Repo Name
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.name}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Created at
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.created_at | date}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Updated at
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.updated_at | date}}
+                                        </div>
+                                    </div> 
+
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Primary Owner
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.owner.login}}
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Main Language
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.language}}
+                                        </div>
+                                    </div> 
+                                
+                                </div>
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Description
+                                        </div> 
+                                        <div class="col-9" id="style-desc">
+                                            {{repo?.description}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Url Link
+                                        </div> 
+                                        <div class="col-9" id="style-desc">
+                                            <button mat-stroked-button (click)="viewRepo(i)" style="color: blue;height: 30px;">View</button>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Private
+                                        </div> 
+                                        <div class="col-9" id="style-desc">   
+                                            <mat-checkbox class="example-margin custom-checkbox" [checked]="repo?.private" disabled="true"></mat-checkbox>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header"> <br>
+                                            Clone Links
+                                        </div> 
+                                        <div class="col-9" id="style-desc"> 
+                                            <div class="example-button-row">
+                                                <button mat-stroked-button [cdkCopyToClipboard]="repo?.clone_url"   matTooltip="Copy HTTPS Clone Link"  >HTTPS</button>
+                                                <button mat-stroked-button [cdkCopyToClipboard]="repo?.ssh_url"    matTooltip="Copy SSH Clone Link" >SSH</button>
+                                                
+                                              </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                     
+                        </div>
+                    </div>
+                </div>
+
+           
+
+                <mat-paginator
+                    [length]="totalRepos"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    (page)="handlePageEvent($event)">
+                </mat-paginator>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- followers -->
+<ng-template #followersDialog>
+    <h2 matDialogTitle>Followers</h2>
+    <div *ngFor="let follower of allFollowersData let i = index">
+        <h4>{{follower?.login}}</h4>
+        <div class="row">
+            <div class=" col-md-6" >
+                <div class="style-card">
+                    <img class="style-avatar" src="{{follower?.avatar_url}}" alt="">
+                </div>
+            </div>
+            <div class=" col-md-6">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Location
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{follower?.location}}
+                    </div>
+                </div> 
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Company
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                    {{follower?.company}}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                    Bio
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{follower?.bio}}
+                    </div>
+                </div>
+
+            
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Created At
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{follower?.created_at | date}}          
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Updated At
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                    {{follower?.updated_at | date}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Email
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{follower?.email}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        X username
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{follower?.twitter_username}}
+                    </div>
+                </div> 
+            </div>
+    
+            </div>
+        </div>
+        <br>
+    </div>
+    
+</ng-template>
+
+
+<!-- following -->
+
+<ng-template #followingDialog>
+    <h3 style="display: inline;">Following</h3>
+    <mat-icon matDialogClose  class="closeIcon">close</mat-icon> <br>  
+    <div *ngFor="let following of allFollowingData ">
+        <h4>{{following?.login}}</h4>
+        <div class="row">
+            <div class="col-4 col-md-6">
+                <div class="style-card">
+                    <img class="style-avatar" src="{{following?.avatar_url}}" alt="">
+                </div>
+            </div>
+            <div class="col-8 col-md-6">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Location
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{following?.location}}
+                    </div>
+                </div> 
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Company
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                    {{following?.company}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                    Bio
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{following?.bio}}
+                    </div>
+                </div>
+
+            
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Created At
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{following?.created_at | date}}          
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Updated At
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                    {{following?.updated_at | date}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        Email
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{following?.email}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-4" id="style-header">
+                        X username
+                    </div> 
+                    <div class="col-8" id="style-desc">
+                        {{following?.twitter_username}}
+                    </div>
+                </div> 
+            </div>
+    
+            </div>
+        </div> 
+        <br>
+    </div>
+ 
+</ng-template>
+
+
+</div>
+
+
+<div *ngIf="mobileDisplay">
+    <div class="container-fluid">
+          <div class="row">
+        <div class="col col-md-6" id ="">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Enter Github Username</mat-label>
+                <input placeholder="Enter User Name" matInput [(ngModel)]="searchUsername" >
+                <mat-hint>Github Username</mat-hint>
+              </mat-form-field>
+        </div>
+        <div class="col col-md-6"> <br>
+            <button *ngIf="loadSearch" mat-button disabled="true"> <mat-icon matSuffix> <mat-spinner diameter="25"></mat-spinner></mat-icon></button>
+            <button *ngIf="!loadSearch" mat-button (click)="searchGitUser()" > <mat-icon matSuffix>search</mat-icon></button>
+        </div>
+    </div> 
+    </div>
+    
+    <mat-tab-group>
+        <mat-tab label="User Details"> 
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col ">
+                        <div class="style-card">
+                            <img class="style-avatar" src="{{userData?.avatar_url}}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Name
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.name}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Location
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.location}}
+                    </div>
+                </div> 
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Company
+                    </div> 
+                    <div class="col" id="style-desc">
+                    {{userData?.company}}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Blog/Portfolio
+                    </div> 
+                    <div class="col" id="style-desc">
+                        <button mat-stroked-button (click)="viewPortfolio()" style="color: blue;height: 30px;">View</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                    Bio
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.bio}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Followers
+                    </div> 
+                    <div class="col" id="style-desc">
+                        <button (click)="openFollowerDial()" mat-button style="color: blue;">{{userData?.followers}} - view</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Following
+                    </div> 
+                    <div class="col" id="style-desc">
+                        <button (click)="openFollowingDial()" mat-button style="color: blue;">{{userData?.following}} - view</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Created At
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.created_at | date}}          
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Updated At
+                    </div> 
+                    <div class="col" id="style-desc">
+                    {{userData?.updated_at | date}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col" id="style-header">
+                        Email
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.email}}
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col" id="style-header">
+                        X username
+                    </div> 
+                    <div class="col" id="style-desc">
+                        {{userData?.twitter_username}}
+                    </div>
+                </div> 
+            </div> <br><br>
+        </mat-tab>
+        <mat-tab label="Repositories"> 
+            <div class="container-fluid"> <br>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Search Repositories</mat-label>
+                    <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"  placeholder="Search by name, full name, description, or language">
+                  </mat-form-field>
+                  
+          
+             
+                <div class="repoPage">
+                    <div *ngFor="let repo of paginatedRepos | search: searchTerm let i = index">
+                        <div class="style-card">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                           Repo Name
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.name}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Created at
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.created_at | date}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Updated at
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.updated_at | date}}
+                                        </div>
+                                    </div> 
+
+                                    <div class="row">
+                                        <div class="col" id="style-header">
+                                            Primary Owner
+                                        </div> 
+                                        <div class="col" id="style-desc">
+                                            {{repo?.owner.login}}
+                                        </div>
+                                    </div> 
+                                    
+                             
+                                
+                                </div>
+                                <div class="col-8">
+                                    
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Url Link
+                                        </div> 
+                                        <div class="col-9" id="style-desc">
+                                            <button mat-stroked-button (click)="viewRepo(i)" style="color: blue;height: 30px;">View</button>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Private
+                                        </div> 
+                                        <div class="col-9" id="style-desc">   
+                                            <mat-checkbox class="example-margin custom-checkbox" [checked]="repo?.private" disabled="true"></mat-checkbox>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header">
+                                            Main Language
+                                        </div> 
+                                        <div class="col-9" id="style-desc">
+                                            {{repo?.language}}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-3" id="style-header"> <br>
+                                            Clone Links
+                                        </div> 
+                                        <div class="col-9" id="style-desc"> 
+                                            <div class="example-button-row">
+                                                <button mat-stroked-button [cdkCopyToClipboard]="repo?.clone_url"   matTooltip="Copy HTTPS Clone Link"  >HTTPS</button>
+                                                <button mat-stroked-button [cdkCopyToClipboard]="repo?.ssh_url"    matTooltip="Copy SSH Clone Link" >SSH</button>
+                                                
+                                              </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="row">
+                                    <div class="col-3" id="style-header">
+                                        Description
+                                    </div> 
+                                    <div class="col-9" id="style-desc">
+                                        {{repo?.description}}
+                                    </div>
+                                </div> 
+                            </div>
+
+                   
+                     
+                        </div>
+         
+
+                    </div>
+                </div>
+                <mat-paginator
+                    [length]="totalRepos"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    (page)="handlePageEvent($event)">
+                </mat-paginator>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+</div>
